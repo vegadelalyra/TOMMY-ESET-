@@ -1,0 +1,21 @@
+{
+  "name": "eset",
+  "version": "0.0.1",
+  "description": "Get unlimited ESET antivirus on your pc",
+  "main": "ESET.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "antivirus",
+    "free antivirus",
+    "ESET free",
+    "ESET license"
+  ],
+  "author": "Vega de la Lyra <lyradeperseo@gmail.com> (https://www.linkedin.com/in/vegadelalyra/)",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^19.7.1"
+  }
+}
