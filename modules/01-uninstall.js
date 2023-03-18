@@ -1,11 +1,14 @@
-import { exec } from 'child_process'
-
-// Replace "Your App Name" with the name of the app you want to uninstall
-const appName = "Wise Memory Optimizer"
+import { spawn } from 'child_process'
 
 // Run the PowerShell command to uninstall the app
-exec(`powershell.exe Get-AppxPackage *${appName}* | Remove-AppxPackage`, 
-(err, stdout, stderr) => {
-  if (err) return console.error(`Error: ${err}`)
-  return console.log(`Successfully uninstalled ${appName}`)
-})
+uninstallProgram('WiseMemoryOptimizer')
+
+function uninstallProgram(program) {
+  const uninstall = spawn(
+    `wmic product where name=${program} call uninstall`, 
+    { shell: true})
+
+  uninstall.stdout.on('data', data => console.log(`stdout: ${data}`))
+  uninstall.stderr.on('data', data => console.error(`stderr: ${data}`))
+  uninstall.on('close', code => console.log(`exited code ${code}`))
+}

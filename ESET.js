@@ -5,3 +5,4 @@
 // 5- New random email https://temp-mail.org/es/
 // 6-configuration > import
 // 7- seize it xd
+
