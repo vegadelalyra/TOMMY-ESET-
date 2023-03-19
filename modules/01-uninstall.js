@@ -1,14 +1,19 @@
-import { spawn } from 'child_process'
+import { spawn } from 'child_process';
 
-// Run the PowerShell command to uninstall the app
-uninstallProgram('WiseMemoryOptimizer')
+const programName = 'ESET Security';
 
-function uninstallProgram(program) {
-  const uninstall = spawn(
-    `wmic product where name=${program} call uninstall`, 
-    { shell: true})
+const uninstallCommand = `Get-WmiObject -Class Win32_Product | Where-Object { $_.Name -eq "${programName}" } | ForEach-Object { $_.Uninstall() }`;
 
-  uninstall.stdout.on('data', data => console.log(`stdout: ${data}`))
-  uninstall.stderr.on('data', data => console.error(`stderr: ${data}`))
-  uninstall.on('close', code => console.log(`exited code ${code}`))
-}
+const powershell = spawn('powershell.exe', ['-Command', uninstallCommand]);
+
+powershell.stdout.on('data', (data) => {
+  console.log(`stdout: ${data}`);
+});
+
+powershell.stderr.on('data', (data) => {
+  console.error(`stderr: ${data}`);
+});
+
+powershell.on('close', (code) => {
+  console.log(`child process exited with code ${code}`);
+});

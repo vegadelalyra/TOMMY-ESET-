@@ -1,13 +1,19 @@
-import { handleOS } from "../handleOS.js"
+import { spawn } from 'child_process'
 
-// Check if ESET is already installed, if not, download and install
+// Replace "Program Name" with the name of the program you want to check for
+const programName = "ESET Security"
 
-// Microsoft Store Apps && Windows Installer Apps 
-const winInstallerApps = 'Get-WmiObject -Class Win32_Product | Select-Object Name, Version, Vendor'
+const args = `Get-ItemProperty HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\* | Where-Object { $_.DisplayName -eq '${programName}' } | Measure-Object | Select-Object -ExpandProperty Count`
 
-// All apps including third parties apps
-const allInstalledApps = 'Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | Sort-Object DisplayName | Format-Table -AutoSize'
+const ps = spawn('powershell.exe', [args])
+let programInstalled = false
 
-// Is ESET installed? 
-// const a = handleOS(winInstallerApps).stdout
-// console.log(a);
+ps.stdout.on('data', data => {
+  const output = data.toString().trim()
+  if (output === '1') programInstalled = true
+})
+
+ps.on('close', () => {
+  if (programInstalled) console.log(`${programName} is installed.`)
+  else console.log(`${programName} is not installed.`)
+}); ps.on('error', err => console.error(err))
