@@ -1,19 +1,21 @@
-import { spawn } from 'child_process';
 
-const programName = 'ESET Security';
+import { spawn } from 'child_process'
 
-const uninstallCommand = `Get-WmiObject -Class Win32_Product | Where-Object { $_.Name -eq "${programName}" } | ForEach-Object { $_.Uninstall() }`;
+// Replace "Program Name" with the name of the program you want to check for
+const programName = "Wise Memory Optimizer 4.1.8"
 
-const powershell = spawn('powershell.exe', ['-Command', uninstallCommand]);
+const args = `Get-ItemProperty HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\* | Where-Object { $_.DisplayName -eq '${programName}' } | Select-Object -ExpandProperty UninstallString`
 
-powershell.stdout.on('data', (data) => {
-  console.log(`stdout: ${data}`);
-});
+const ps = spawn('powershell.exe', [args])
+let programInstalled = false
 
-powershell.stderr.on('data', (data) => {
-  console.error(`stderr: ${data}`);
-});
+ps.stdout.on('data', data => {
+  const output = data.toString().trim()
+spawn('C:\\"Program Files"\\Wise\\"Wise Memory Optimizer"\\unins000.exe', {shell: true})
+  if (output === '1') programInstalled = true
+})
 
-powershell.on('close', (code) => {
-  console.log(`child process exited with code ${code}`);
-});
+ps.on('close', () => {
+  if (programInstalled) console.log(`${programName} is installed.`)
+  else console.log(`${programName} is not installed.`)
+}); ps.on('error', err => console.error(err))

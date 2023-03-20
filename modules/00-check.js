@@ -1,7 +1,7 @@
 import { spawn } from 'child_process'
 
 // Replace "Program Name" with the name of the program you want to check for
-const programName = "ESET Security"
+const programName = "Wise Memory Optimizer 4.1.8"
 
 const args = `Get-ItemProperty HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\* | Where-Object { $_.DisplayName -eq '${programName}' } | Measure-Object | Select-Object -ExpandProperty Count`
 
