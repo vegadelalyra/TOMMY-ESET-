@@ -16,6 +16,11 @@ export async function getRandomEmail() {
     await page[0].goto(URL, {waitUntil: 'domcontentloaded'})
 
     // Search for random email on temp-mail.org website
+    page[0].setRequestInterception(true)
+    page[0].on('request', req => {
+        if (req.url != 'https://web2.temp-mail.org/messages') req.abort()
+        else req.continue()
+    })
     await page[0].waitForRequest('https://web2.temp-mail.org/messages')
     await page[0].click("#click-to-copy", {delay: 1000})
     await browser.close()
