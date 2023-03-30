@@ -1,4 +1,4 @@
-import { exec } from 'child_process'
+import { exec, spawn } from 'child_process'
 
 const appName = 'Eset' // Replace this with the name of the app you want to check for
 exec(`where ${appName}`, (error, stdout, stderr) => {
@@ -10,9 +10,10 @@ exec(`where ${appName}`, (error, stdout, stderr) => {
 
 // Executing Eset Security Installer 
 const appPath = 'C:\\Users\\VegadelaLyra\\Documents\\ESET\\eset_internet_security_live_installer.exe'
+spawn(appPath)
 
-const appProcess = exec(appPath)
 
-appProcess.stdout.on('data', data => console.log(`stdout: ${data}`))
-appProcess.stderr.on('data', data => console.error(`stderr: ${data}`))
-appProcess.on('close', code => console.log(`child process exited with code ${code}`))
+
+
+// end code execution to let it return to slumber
+setTimeout(() => process.exit(), 1000) 

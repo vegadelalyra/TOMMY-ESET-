@@ -14,12 +14,12 @@ export async function delete_EsetLocal() {
             list = list.split('\r\n').filter(x => x).splice(1) 
             resolve(list)
         })    
-    }); console.log(...users)
+    }); console.log('USUARIOS:\n' + [...users])
     const deleteFolder = path => spawn('powershell.exe', ['-Command', `Remove-Item -Path "${path}" -Recurse`]) 
 
     // if only one user, deletes the local eset folder once
     const oneUser = () => {
-        const path = `C:\\Users\\${process.env.USERNAME}\\AppData\\Local\\ESET` 
+       const path = `C:\\Users\\${process.env.USERNAME}\\AppData\\Local\\ESET` 
         return deleteFolder(path)
     }; if (users.length == 1) return oneUser()
     
